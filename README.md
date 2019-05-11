@@ -8,7 +8,7 @@
 
 ### 사용자 정보
 
-### zepeto rendering
+### ZEPETO Render API
 
 #### `/render/{user_id}` 프로필
 
