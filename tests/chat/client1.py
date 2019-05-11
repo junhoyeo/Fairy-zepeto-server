@@ -19,3 +19,9 @@ def paired(data):
     }
     print('SEND:', chat)
     sio.emit('talk', chat)
+
+    sio.emit('question', { 'token': user1_token })
+
+@sio.on('questioned')
+def questioned(data):
+    print('Q:', data)

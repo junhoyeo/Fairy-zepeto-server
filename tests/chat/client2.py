@@ -15,3 +15,7 @@ def paired(data):
 @sio.on('received')
 def received(data):
     print(data)
+
+@sio.on('questioned')
+def questioned(data):
+    print('Q:', data)
