@@ -1,13 +1,10 @@
 import requests
 from PIL import Image
+from server.utils import PROFILE_PHOTOBOOTH, build_query_url
 
-API_HOST = '47.74.149.35/api'
-PHOTOBOOTH_ID = '14H8320f7MYeqkg0UEwmGY'  # PHOTOBOOTH_ONE_87
-
-URL = f'http://{API_HOST}/photo/{PHOTOBOOTH_ID}/?width=500&hashCodes='
-
-def get_zepeto(user_id, filename, crop_pos=None):
-    res = requests.get(URL + user_id)
+def get_zepeto_profile(user_id, filename, crop_pos=None):
+    url = build_query_url(PROFILE_PHOTOBOOTH, user_id)
+    res = requests.get(url)
     if res.status_code == 200:
         with open(filename, 'wb') as mask_file:
             for chunk in res:

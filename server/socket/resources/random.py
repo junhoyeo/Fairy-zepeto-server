@@ -62,7 +62,7 @@ def match(token): # 랜덤 매칭?
     identity = decode_token(token) # 유효하지 않다면 여기서 에러 뜸
     user_id = identity['identity'] # 사용자 id를 토큰을 통해 구함
     join_room(user_id) # 자기 id로 룸을 만든다.
-    # FIXME: 이거 근데 이미 자기 room에 join한 상황에서 다시 실행되면 어캐되는거임?
+    # 이거 근데 이미 자기 room에 join한 상황에서 다시 실행되면 어캐되는거임? -> 별 상관 없더라
 
     # 그 다음에는 해당 사용자가 채팅 중인지(chats에 있는지) 확인함
     for idx, chat in enumerate(CHATS):
