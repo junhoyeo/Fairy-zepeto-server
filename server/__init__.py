@@ -14,7 +14,8 @@ def create_app():
 
     CORS().init_app(_app)
     JWTManager().init_app(_app)
-    _app.secret_key = os.urandom(24)
+    # _app.secret_key = os.urandom(24)
+    _app.secret_key = 'JunctionX-seoul' # 서버 디버깅 중 restart 되어도 토큰 expire 되지 않게
     _app.config.from_object(DevConfig)
     return _app
 
