@@ -9,7 +9,7 @@ from server import mongo
 from server.namespaces import hash_password
 
 def location_validator(location):
-    if location in ['korea', 'english']:
+    if location in ['korean', 'english']:
         return True
     return False
 
