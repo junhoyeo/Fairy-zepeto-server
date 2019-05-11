@@ -16,6 +16,7 @@ validators = "*"
 requests = "*"
 pillow = "*"
 flask-socketio = "*"
+googletrans = "*"
 
 [requires]
 python_version = "3.7"

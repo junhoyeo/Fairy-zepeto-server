@@ -19,3 +19,7 @@ def received(data):
 @sio.on('questioned')
 def questioned(data):
     print('Q:', data)
+
+@sio.on('opponent-answered')
+def other_answered(data):
+    print('client1:', data)

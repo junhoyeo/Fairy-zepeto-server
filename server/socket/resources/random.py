@@ -6,6 +6,9 @@ from server.socket import socketio
 # from flask import request
 from flask_socketio import join_room
 from flask_jwt_extended import decode_token
+from googletrans import Translator
+
+translator = Translator()
 
 CHATS = [] # 현재 서버에 존재하는 chat 오브젝트
 USERS = [] # 현재 서버에 존재하는 user 중 chat에 소속 x -> user _id로 구성
@@ -29,7 +32,18 @@ def update_users():
         # 최대한 랜덤으로 짝을 만들어 CHAT을 생성한다.
 
         for pair in pairs:
-            chat = { 'users': [] } # 새로운 chat 오브젝트 (하나의 room으로 고쳐야 함)
+            chat = { 
+                'users': [],
+                'questions': [
+                    {
+                        'id': question['id'],
+                        'question': question['question'],
+                        'answers': question['answers'],
+                        'response': [False, False]
+                    }
+                    for question in load_questions(3)
+                ]
+            } # 새로운 chat 오브젝트 (하나의 room으로 고쳐야 함)
             for idx, user in enumerate(pair):
                 # chat에 짝의 각 사람들을 추가하고 
                 chat['users'].append(user)
@@ -89,6 +103,10 @@ def match(token): # 랜덤 매칭?
     update_users()
     # update_users는 users에서 최대한 많이 랜덤 짝을 만들어서 걔네한테 이벤트를 emit해준다.
 
+def translate_message(message):
+    dest = 'en' if translator.detect(message).lang == 'ko' else 'ko'
+    return translator.translate(message, dest=dest).text
+
 @socketio.on('talk')
 def talk(data):
     # data = token, target, message
@@ -97,13 +115,62 @@ def talk(data):
     user_id = identity['identity'] # 사용자 id를 토큰을 통해 구함
 
     target = data['target'] # 메세지 수신자의 id
-    message = data['message'] # 메세지 내용
+    message = {
+        'text': data['message'], # 메세지 내용
+        'translate': translate_message(data['message']) # 번역
+    }
     
     # target이라는 user_id로 message라는 데이터를 보내는 게 들어옴.
     # 그러면 target의 room으로 message 담은 received를 emit해주면 되겠지?
     socketio.emit('received', message, room=target) # 해당 유저에게 상대방 정보를 보낸다.
 
+def get_current_question(data):
+    token = data['token']
+    identity = decode_token(token) # 유효하지 않다면 여기서 에러 뜸
+    user_id = identity['identity'] # 사용자 id를 토큰을 통해 구함
+
+    global CHATS
+    for chat in CHATS:
+        if user_id in chat['users']:
+            this_chat = chat
+            user_idx = chat['users'].index(user_id)
+            break
+    print(this_chat)
+
+    for question in this_chat['questions']:
+        if not all(question['response']):
+            this_question = question
+    print(this_question)
+
+    return user_id, user_idx, this_chat, this_question
+
 @socketio.on('question')
 def question(data):
-    pass
-    # 와 이걸 어떻게 하면 잘 했다고 소문이 날까?
+    user_id, _, this_chat, this_question = get_current_question(data)
+
+    for idx, user in enumerate(this_chat['users']):
+        if not this_question['response'][idx]:
+            socketio.emit('questioned', this_question, room=user) # 응답 안 한 사용자에게 질문 정보를 보낸다.
+
+@socketio.on('answer')
+def answer(data):
+    user_id, user_idx, this_chat, this_question = get_current_question(data)
+    
+    answer = data['answer'] # 사용자가 보낸 응답
+
+    # chat.question.response[user idx]에서 응답했다고 변경
+    this_question['response'][user_idx] = True 
+    # 얘만 바꿔도 CHATS까지 싹 적용됨
+
+
+    # 디른 사용자한테 이걸 emit
+    socketio.emit('opponent-answered', {
+        'question_id': this_question['id'],
+        'answer': answer
+    }, room=this_chat['users'][int(not user_idx)])
+
+    # 만약에 질문 넘겨도 되면(둘 다 true) 넘겨달라고(다시 클라에서 question을 emit) emit
+    if all(this_question['response']):
+        for user in this_chat['users']:
+            socketio.emit('clear', room=user)
+
