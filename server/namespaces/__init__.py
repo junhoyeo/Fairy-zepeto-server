@@ -47,3 +47,6 @@ api.add_namespace(auth_ns, path='/auth')
 
 from server.namespaces.render import render_ns
 api.add_namespace(render_ns, path='/render')
+
+from server.namespaces.social import social_ns
+api.add_namespace(social_ns, path='/social')
