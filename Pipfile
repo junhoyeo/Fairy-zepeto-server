@@ -8,7 +8,6 @@ python-socketio = {extras = ["client"],version = "*"}
 
 [packages]
 flask = "*"
-flask-common = "*"
 flask-cors = "*"
 flask-jwt-extended = "*"
 flask-restplus = "*"

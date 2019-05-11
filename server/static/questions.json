@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "question": "Flask가 좋을까요, Django가 좋을까요?",
+        "answers": [ "Flask", "Django" ]
+    },  
+    {
+        "id": 2,
+        "question": "준호는 잘생긴 편일까요, 귀여운 편일까요?",
+        "answers": [ "잘생긴 편", "귀여운 편" ]
+    },
+    {
+        "id": 3,
+        "question": "닭이 먼저일까요, 계란이 먼저일까요?",
+        "answers": [ "닭", "계란" ]
+    }
+]

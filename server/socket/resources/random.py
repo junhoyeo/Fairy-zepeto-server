@@ -1,3 +1,4 @@
+import json
 import random
 from bson import ObjectId
 from server import mongo
@@ -51,6 +52,11 @@ def update_users():
     else:
         print('not enough users')
 
+def load_questions(number): # 질문 목록에서 랜덤 질문을 number 개 가져옴
+    with open('./server/static/questions.json') as question_file:
+        questions = json.load(question_file)
+    return random.sample(questions, number)
+
 @socketio.on('match')
 def match(token): # 랜덤 매칭?
     global CHATS, USERS
@@ -96,3 +102,8 @@ def talk(data):
     # target이라는 user_id로 message라는 데이터를 보내는 게 들어옴.
     # 그러면 target의 room으로 message 담은 received를 emit해주면 되겠지?
     socketio.emit('received', message, room=target) # 해당 유저에게 상대방 정보를 보낸다.
+
+@socketio.on('question')
+def question(data):
+    pass
+    # 와 이걸 어떻게 하면 잘 했다고 소문이 날까?
