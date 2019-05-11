@@ -13,6 +13,7 @@ flask-jwt-extended = "*"
 flask-restplus = "*"
 flask-pymongo = "*"
 validators = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
