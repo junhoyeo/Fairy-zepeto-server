@@ -6,22 +6,22 @@ setInterval(function () {
     navigator.mediaDevices.getUserMedia({
       video: true
     })
-            .then(function (stream) {
-              video.srcObject = stream
-              const track = stream.getVideoTracks()[0]
-              let imageCapture = new ImageCapture(track)
-              imageCapture.grabFrame()
-                    .then(function (imageBitmap) {
-                        // console.log('Grabbed frame:', imageBitmap);
-                      canvas.getContext('2d').drawImage(imageBitmap, 0, 0)
-                    })
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+      .then(function (stream) {
+        video.srcObject = stream
+        const track = stream.getVideoTracks()[0]
+        let imageCapture = new ImageCapture(track)
+        imageCapture.grabFrame()
+          .then(function (imageBitmap) {
+              // console.log('Grabbed frame:', imageBitmap);
+            canvas.getContext('2d').drawImage(imageBitmap, 0, 0)
+          })
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
   var url = canvas.toDataURL()
-    // console.log(url);
+  // console.log(url);
   socket.emit('frame', url)
 }, 100)
 var processed = document.querySelector('canvas#res')
