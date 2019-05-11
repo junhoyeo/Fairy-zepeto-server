@@ -23,6 +23,7 @@ class Register(Resource):
     def post(self):
         user = user_ns.payload
         user['password'] = hash_password(user['password'])
+        user['friends'] = [] # 친구 목록을 추가
         result = mongo.db.users.insert_one(user)
         if not result.acknowledged:
             return {}, 500
