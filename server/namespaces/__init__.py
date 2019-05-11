@@ -33,7 +33,7 @@ def hash_password(password):
 api = Api(
     title='Fairy',
     version='1.0',
-    description='Powered by JFlask',
+    description='Powered by JFlask; Video and Chat server is running separately with Socket.IO',
 )
 
 from server.namespaces.test import test_ns

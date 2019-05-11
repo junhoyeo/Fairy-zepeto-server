@@ -1,4 +1,4 @@
-from server import app, common
+from server import app, socketio
 
 if __name__ == '__main__':
-    common.serve(host=app.config['HOST'], port=app.config['PORT'])
+    socketio.run(app, host=app.config['HOST'], port=app.config['PORT'])

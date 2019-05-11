@@ -15,6 +15,7 @@ flask-pymongo = "*"
 validators = "*"
 requests = "*"
 pillow = "*"
+flask-socketio = "*"
 
 [requires]
 python_version = "3.7"

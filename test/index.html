@@ -1,0 +1,17 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+<body>
+  <div id="container">
+    <canvas id="cam" width="1280" height="720"></canvas>
+    <canvas id="res" width="1280" height="720"></canvas>
+    <video autoplay="true" id="video"></video>
+  </div>
+  <style>
+    #video {
+      visibility: hidden;
+    }
+    canvas {
+      width: 40%;
+    }
+  </style>
+  <script src="./client.js"></script>
+</body>

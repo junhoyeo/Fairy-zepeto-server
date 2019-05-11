@@ -3,6 +3,7 @@ from flask_common import Common
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_jwt_extended import JWTManager
+from flask_socketio import SocketIO
 import os
 
 from config import DevConfig
@@ -24,4 +25,5 @@ mongo = PyMongo(app)
 from server.namespaces import api
 api.init_app(app)
 
-common = Common(app)
+socketio = SocketIO(app)
+__import__('server.socket')
