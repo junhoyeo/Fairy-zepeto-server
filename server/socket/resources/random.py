@@ -137,9 +137,14 @@ def get_current_question(data):
             break
     print(this_chat)
 
+    this_question = None
     for question in this_chat['questions']:
         if not all(question['response']):
             this_question = question
+    if not this_question:
+        for user in this_chat['users']:
+            socketio.emit('end-questions', room=user)
+        return
     print(this_question)
 
     return user_id, user_idx, this_chat, this_question

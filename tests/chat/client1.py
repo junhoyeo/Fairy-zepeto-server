@@ -20,7 +20,7 @@ def paired(data):
     print('SEND:', chat)
     sio.emit('talk', chat)
 
-    sio.emit('question', { 'token': user1_token })
+    sio.emit('question', user1_token)
     sio.emit('answer', { 'token': user1_token, 'answer': 'asdf' })
 
 @sio.on('questioned')
