@@ -57,7 +57,6 @@ def match(token): # 랜덤 매칭?
     if user_id not in USERS:
         USERS.append(user_id)
 
-    USERS += ['1gfsgfsgfsfsg4', '2fsgfgsgsffsggfs']
     # users가 업데이트될 때마다 update_users 같은 걸 실행해주자
     update_users()
     # update_users는 users에서 최대한 많이 랜덤 짝을 만들어서 걔네한테 이벤트를 emit해준다.
