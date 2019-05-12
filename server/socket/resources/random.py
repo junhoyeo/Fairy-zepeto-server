@@ -20,6 +20,7 @@ USERS = [] # 현재 서버에 존재하는 user 중 chat에 소속 x -> user _id
 
 def update_users():
     global CHATS, USERS
+    print(CHATS, USERS)
     if len(USERS) >= 2: # 2명 이상이라 매칭 가능
         pairs = []
         # print(USERS)
@@ -56,6 +57,8 @@ def update_users():
                 # NOTE: 제페토 프사는 zepeto_id 가지고 프엔이 알아서 쿼리하셈!!!
                 other_user = mongo.db.users.find_one({'_id': ObjectId(pair[int(not idx)])})
                 other_user['_id'] = str(other_user['_id'])
+                for idx, friend in enumerate(other_user['friends']):
+                    other_user['friends'][idx] = str(friend)
                 other_user.pop('password', None) # 해싱된 패스워드는 양심적으로 빼서 보내야겠다.
                 print(other_user)
 
@@ -91,6 +94,8 @@ def match(token): # 랜덤 매칭?
             users_to_move = chat['users']
             del CHATS[idx] # chat을 지우고
             for user in users_to_move:
+                socketio.emit('ended', room=user)
+                # 얘네한테 니네 끝났다고 해줘야함
                 USERS.append(user)
             break
     
@@ -143,7 +148,7 @@ def get_current_question(data):
             this_question = question
     if not this_question:
         for user in this_chat['users']:
-            socketio.emit('end-questions', room=user)
+            socketio.emit('end_questions', room=user)
         return
     print(this_question)
 
@@ -169,7 +174,7 @@ def answer(data):
 
 
     # 디른 사용자한테 이걸 emit
-    socketio.emit('opponent-answered', {
+    socketio.emit('opponent_answered', {
         'question_id': this_question['id'],
         'answer': answer
     }, room=this_chat['users'][int(not user_idx)])

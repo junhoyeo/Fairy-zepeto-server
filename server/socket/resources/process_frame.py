@@ -19,4 +19,4 @@ def received_frame(url):
     frame.save(buffered, format='JPEG')
     processed_url = base64.b64encode(buffered.getvalue())
 
-    socketio.emit('processed', 'data:image/png;base64,' + str(processed_url.decode()))
+    socketio.mit('processed', 'data:image/png;base64,' + str(processed_url.decode()))

@@ -31,6 +31,9 @@
 - 매칭됨
 - 상대방 정보가 들어옴(_id 등등)
 
+#### `client.on('ended')`
+- 채팅이 끊김 ~~너 싫대~~
+
 #### `client.emit('talk', {token, target, message})`
 - target에게 메세지 전송
 
@@ -46,13 +49,13 @@
 #### `client.emit('answer', {token, answer})`
 - 질문에 웅답
 
-#### `client.on('opponent-answered')`
+#### `client.on('opponent_answered')`
 - 상대방의 응답이 들어옴
 
 #### `client.on('clear')`
 - 해당 질문이 끝남
 
-#### `client.on('end-questions')`
+#### `client.on('end_questions')`
 - 질문하기가 끝남
 
 ### 프레임 처리
